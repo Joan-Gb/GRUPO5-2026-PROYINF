@@ -17,4 +17,16 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 
 
 ## Aspectos técnicos relevantes
+### Requisitos Previos
 
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
+- [Node.js](https://nodejs.org/) (opcional, solo para desarrollo local)
+- `curl` o cliente HTTP (para probar endpoints)
+
+### Ejecución
+
+Para ejecutar el frontend poner en terminal:
+cd frontend
+npm install
+npm run dev
