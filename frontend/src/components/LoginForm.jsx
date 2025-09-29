@@ -57,7 +57,7 @@ export default function LoginForm({ onSubmit }) {
         </button>
 
         <p className="footer">
-          ¿No tienes cuenta? <a href="#">Regístrate aquí</a>
+          ¿No eres cliente? <a href="#">Regístrate aquí</a>
         </p>
       </form>
     </div>
