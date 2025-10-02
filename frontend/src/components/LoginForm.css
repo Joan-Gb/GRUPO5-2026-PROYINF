@@ -1,0 +1,97 @@
+/* LoginForm.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  display: flex;
+  box-sizing: border-box;
+  height: 100vh;
+  background-image: url('/R.jpg');
+}
+
+.logo {
+  width: 20%;
+  height: auto;
+  margin-bottom: 1rem;
+  align-self: center;
+   
+}
+
+/* Contenedor principal: ocupa toda la pantalla */
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vh; /* antes 50% */
+}
+
+.container_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  gap: 1rem;
+
+}
+
+/* Formulario de login */
+.login-form {
+  background: white;
+  padding: 2rem;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  flex: 1; /* ocupa el espacio proporcional */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  gap: 1rem;
+}
+
+.login-form h2 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #000000;
+  font-size: 2rem;
+
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 5%;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 0.5rem;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+/* Opciones */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+/* Botón */
+.login-btn {
+  background: #1e3a8a;
+  color: white;
+  padding: 0.6rem;
+  width: 40%;
+  border: none;
+  border-radius: 200px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
