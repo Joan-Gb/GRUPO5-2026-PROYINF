@@ -1,4 +1,4 @@
-import './LoanRequest.css';
+
 import { useState } from 'react';
 
 function LoanRequest() {

@@ -1,13 +1,4 @@
 /* LoanRequest.css */
-body {
-    margin: 0;
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #3b82f6, #1e3a8a);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .loan-request-container {
     background: white;

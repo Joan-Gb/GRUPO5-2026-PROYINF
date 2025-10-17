@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./LoginForm.css";
+import styles from "./LoginForm.module.css"; // Import correcto de CSS Modules
 
 export default function LoginForm({ onSubmit }) {
   const [rut, setRUT] = useState("");
@@ -12,16 +12,23 @@ export default function LoginForm({ onSubmit }) {
     onSubmit({ rut, password, remember });
   };
 
-  return (
-      <div className="login-container">
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className = "container_form">
-            <h2>Iniciar Sesión</h2>
-            <p className="subtitle">Accede a tu cuenta para continuar</p>
+  const handleSimulate = (e) => {
+    e.preventDefault();
+    // Aquí no necesitas credenciales, solo redirigir a LoanRequest
+    onSubmit({ simulate: true });
+  };
 
-            <div className="input-group">
+  return (
+    <div className={styles.loginBack}>
+      <div className={styles.loginContainer}>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
+          <div className={styles.containerForm}>
+            <h2>Iniciar Sesión</h2>
+            <p className={styles.subtitle}>Accede a tu cuenta para continuar</p>
+
+            <div className={styles.inputGroup}>
               <input
-                type="rut"
+                type="text"
                 placeholder="RUT"
                 value={rut}
                 onChange={(e) => setRUT(e.target.value)}
@@ -29,7 +36,7 @@ export default function LoginForm({ onSubmit }) {
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
@@ -39,8 +46,7 @@ export default function LoginForm({ onSubmit }) {
               />
             </div>
 
-
-            <div className="options">
+            <div className={styles.options}>
               <label>
                 <input
                   type="checkbox"
@@ -49,22 +55,26 @@ export default function LoginForm({ onSubmit }) {
                 />{" "}
                 Recuérdame
               </label>
-              <button type="button" className="link-btn">
+              <button type="button" className={styles.linkBtn}>
                 ¿Olvidaste tu contraseña?
               </button>
             </div>
 
-            <button type="submit" className="login-btn">
+            <button type="submit" className={styles.loginBtn}>
               Iniciar Sesión
             </button>
 
-            <p className="footer">
-              ¿No eres cliente? <a href="#">Regístrate aquí</a>
+            <p className={styles.footer}>
+              ¿Quieres ser cliente?{" "}
+              <a href="#" onClick={handleSimulate}>
+                Simula
+              </a>
             </p>
-             <img src="/logo-usm.png" alt="Logo USM" className="logo" />
-          </div>
-          </form>
 
+            <img src="/logo-usm.png" alt="Logo USM" className={styles.logo} />
+          </div>
+        </form>
       </div>
+    </div>
   );
 }

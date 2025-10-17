@@ -1,19 +1,25 @@
-/*
+import { useState } from "react";
+import LoanRequest from "./components/LoanRequest";
+import LoginForm from "./components/LoginForm";
 import LoanSimulator from "./components/LoanSimulator";
 
 export default function App() {
-  return <LoanSimulator />;
-}
+  const [activeComponent, setActiveComponent] = useState("login");
+
+  const handleLogin = (data) => {
+    if (data.simulate) {
+      setActiveComponent("loan");
+    } else {
+      // Aquí podrías validar credenciales
+      setActiveComponent("loan");
+    }
+  };
 
 
-import LoanRequest from "./components/LoanRequest";
-
-export default function App() {
-  return <LoanRequest />;
-}
-*/
-import LoginForm from "./components/LoginForm";
-
-export default function App() {
-  return <LoginForm />;
+  return (
+    <div>
+      {activeComponent === "login" && <LoginForm onSubmit={handleLogin} />}
+      {activeComponent === "loan" && <LoanSimulator />}
+    </div>
+  );
 }

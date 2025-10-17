@@ -1,75 +1,70 @@
 /* LoginForm.css */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.loginBack {
   display: flex;
-  box-sizing: border-box;
   height: 100vh;
   background-image: url('/R.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: sans-serif;
+  box-sizing: border-box;
 }
 
+/* Logo dentro del formulario */
 .logo {
-  width: 20%;
+  width: 50%;
   height: auto;
   margin-bottom: 1rem;
   align-self: center;
-   
 }
 
-/* Contenedor principal: ocupa toda la pantalla */
-.login-container {
+/* Contenedor blanco a la izquierda */
+.loginContainer {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   height: 100vh;
-  width: 100vh; /* antes 50% */
+  width: 40%;              /* ocupa el 40% de la pantalla */
+  background: white;       /* fondo blanco */
+  padding: 2rem;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2); /* sombra para separarlo */
 }
 
-.container_form {
+/* Contenido del formulario */
+.containerForm {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
   gap: 1rem;
-
+  width: 100%;
 }
 
 /* Formulario de login */
-.login-form {
-  background: white;
-  padding: 2rem;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  flex: 1; /* ocupa el espacio proporcional */
+.loginForm {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  width: 50%;
   gap: 1rem;
+  width: 100%;
 }
 
-.login-form h2 {
+.loginForm h2 {
   text-align: center;
   text-transform: uppercase;
   color: #000000;
   font-size: 2rem;
-
 }
 
 /* Inputs */
-.input-group {
+.inputGroup {
   display: flex;
   align-items: center;
-  width: 40%;
-  height: 5%;
+  width: 80%;
   border: 1px solid #ccc;
   border-radius: 20px;
   padding: 0.5rem;
 }
 
-.input-group input {
+.inputGroup input {
   border: none;
   outline: none;
   flex: 1;
@@ -81,17 +76,23 @@ body {
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
+  width: 80%;
 }
 
 /* Botón */
-.login-btn {
-  background: #1e3a8a;
+.loginBtn {
+  background: #284697b9;
   color: white;
   padding: 0.6rem;
-  width: 40%;
+  width: 80%;
   border: none;
   border-radius: 200px;
   font-weight: bold;
   cursor: pointer;
 }
 
+.footer {
+  font-size: 0.85rem;
+  text-align: center;
+
+}
