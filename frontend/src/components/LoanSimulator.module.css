@@ -1,23 +1,18 @@
-.simulatorContainer {
+.container {
+  padding-top: 10vh;
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* arranca desde arriba */
-  height: 100%;
-}
-
-.simulatorForm {
-  display: flex;
-  flex-direction: column;   /* fuerza columna */
-  align-items: center;      /* centra horizontalmente */
+  flex-direction: column;   /* todo en columna */
+  align-items: center;      /* centrado horizontal */
   gap: 16px;
   width: 100%;
-  max-width: 320px;         /* ancho uniforme */
+  max-width: 320px;
+  margin: 0 auto;
   text-align: center;
 }
 
 .header {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #333;
   text-transform: uppercase;
@@ -45,7 +40,7 @@
   font-weight: 500;
   color: #444;
   width: 100%;
-  text-align: left; /* etiquetas alineadas a la izquierda */
+  text-align: left;
 }
 
 .input,
@@ -109,4 +104,63 @@
 .resultText {
   font-size: 1rem;
   color: #333;
+}
+
+.wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* área derecha del simulador */
+.rightContainer {
+  margin-left: 40vw;   /* deja espacio para el panel fijo */
+  width: 60vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resultContainer {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 30%;
+  max-width: 500px;
+  text-align: center;
+  height: 40vh;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.resultContainer {
+  position: relative; /* 👈 permite ubicar el botón dentro */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón arriba a la derecha dentro del contenedor */
+.toggleButtonTopRight {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #0077cc94;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.toggleButtonTopRight:hover {
+  background-color: #0077cc;
 }
