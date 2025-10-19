@@ -1,0 +1,13 @@
+/* Panel.module.css */
+.panel {
+  position: fixed;       /* se fija en la pantalla */
+  top: 0;
+  left: 0;               /* pegado al borde izquierdo */
+  width: 40vw;           /* 40% del ancho del viewport */
+  height: 100vh;         /* ocupa toda la altura */
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  border-right: 1px solid #ddd; /* opcional: separador visual */
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+}

@@ -19,7 +19,6 @@ export default function LoginForm({ onSubmit }) {
   };
 
   return (
-    <div className={styles.loginBack}>
       <div className={styles.loginContainer}>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <div className={styles.containerForm}>
@@ -75,6 +74,5 @@ export default function LoginForm({ onSubmit }) {
           </div>
         </form>
       </div>
-    </div>
   );
 }

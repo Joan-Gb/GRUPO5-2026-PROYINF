@@ -1,79 +1,90 @@
-import './LoanSimulator.css';
-import { useState } from 'react';
+import React, { useState } from "react";
+import styles from "./LoanSimulator.module.css";
 
-function LoanSimulator() {
-    const [amount, setAmount] = useState('');
-    const [term, setTerm] = useState('');
-    const [interestRate, setInterestRate] = useState('');
-    const [result, setResult] = useState(null);
-    const [history, setHistory] = useState([]);
+export default function LoanSimulator() {
+  const [amount, setAmount] = useState("");
+  const [installments, setInstallments] = useState(24);
+  const [daysToStart, setDaysToStart] = useState("");
+  const [monthlyPayment, setMonthlyPayment] = useState(null);
+  const [error, setError] = useState("");
 
-    const handleSimulation = () => {
-        const newResult = {
-        amount,
-        term,
-        interestRate,
-        summary: `Simulación: Monto $${amount}, Plazo ${term} meses, Tasa ${interestRate}%`
-        };
-        setResult(newResult.summary);
-        setHistory([newResult, ...history]);
-    };
+  const MIN_AMOUNT = 500000;
+  const MAX_AMOUNT = 150000000;
+  const INTEREST_RATE = 0.012;
 
-    const loadSimulation = (sim) => {
-        setAmount(sim.amount);
-        setTerm(sim.term);
-        setInterestRate(sim.interestRate);
-        setResult(sim.summary);
-    };
+  const handleCalculate = () => {
+    setError("");
+    setMonthlyPayment(null);
 
-    return (
-        <div className="simulator-wrapper">
-        <div className="history-panel">
-            <h3>Simulaciones anteriores</h3>
-            <table>
-            <thead>
-                <tr>
-                <th>Monto</th>
-                <th>Plazo</th>
-                <th>Tasa</th>
-                </tr>
-            </thead>
-            <tbody>
-                {history.map((sim, index) => (
-                <tr key={index} onClick={() => loadSimulation(sim)}>
-                    <td>${sim.amount}</td>
-                    <td>{sim.term}</td>
-                    <td>{sim.interestRate}%</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
+    const amt = parseInt(amount);
+    if (isNaN(amt) || amt < MIN_AMOUNT || amt > MAX_AMOUNT) {
+      setError(`El monto debe estar entre $${MIN_AMOUNT.toLocaleString()} y $${MAX_AMOUNT.toLocaleString()}.`);
+      return;
+    }
+
+    const r = INTEREST_RATE;
+    const n = installments;
+    const M = amt * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    setMonthlyPayment(M.toFixed(0));
+  };
+
+  return (
+      <div className={styles.container}>
+        <h2 className={styles.header}>Simula y Contrata</h2>
+
+        <div className={styles.alert}>
+          <b>¡Este es tu nuevo Simulador de Crédito de Consumo con abono inmediato!</b>
+          <p>Simula, solicita su aprobación y recíbelo de inmediato en tu cuenta.</p>
         </div>
 
-        <div className="loan-simulator-container">
-            <h2>Simulador de Préstamo</h2>
+        <h3 className={styles.sectionTitle}>Simula tu Crédito de Consumo</h3>
 
-            <div className="field">
-            <label>Monto solicitado ($):</label>
-            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} />
-            </div>
+        <label className={styles.label}>¿Cuál es el monto que quieres?</label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Ingresa el monto"
+          className={styles.input}
+        />
+        <p className={styles.helperText}>Monto mín. $500.000 / máx. $150.000.000</p>
 
-            <div className="field">
-            <label>Plazo (meses):</label>
-            <input type="number" value={term} onChange={e => setTerm(e.target.value)} />
-            </div>
+        <label className={styles.label}>¿En cuántas cuotas?</label>
+        <select
+          value={installments}
+          onChange={(e) => setInstallments(parseInt(e.target.value))}
+          className={styles.select}
+        >
+          {Array.from({ length: 55 }, (_, i) => i + 6).map((n) => (
+            <option key={n} value={n}>{n} cuotas</option>
+          ))}
+        </select>
 
-            <div className="field">
-            <label>Tasa de interés (%):</label>
-            <input type="number" value={interestRate} onChange={e => setInterestRate(e.target.value)} />
-            </div>
+        <label className={styles.label}>¿Cuándo quieres comenzar a pagar?</label>
+        <input
+          type="number"
+          value={daysToStart}
+          onChange={(e) => setDaysToStart(e.target.value)}
+          placeholder="Ej: 30"
+          className={styles.input}
+        />
+        <p className={styles.helperText}>Puedes elegir hasta 90 días</p>
 
-            <button onClick={handleSimulation}>Simular</button>
+        <button onClick={handleCalculate} className={styles.button}>
+          Calcular cuota mensual
+        </button>
 
-            {result && <div className="result">{result}</div>}
-        </div>
-        </div>
-    );
+        {error && <p className={styles.error}>{error}</p>}
+
+        {monthlyPayment && (
+          <div className={styles.result}>
+            <h4 className={styles.resultTitle}>Resultado de tu simulación</h4>
+            <p className={styles.resultText}>
+              Cuota mensual estimada: <b>${parseInt(monthlyPayment).toLocaleString()}</b>
+            </p>
+            <p className={styles.helperText}>(Tasa simulada 1.2% mensual)</p>
+          </div>
+        )}
+      </div>
+  );
 }
-
-export default LoanSimulator;

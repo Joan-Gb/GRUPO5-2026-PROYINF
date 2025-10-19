@@ -1,1 +1,19 @@
-  
+/* App.css */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('./R.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* App.css */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f0f0f0;
+}
+
