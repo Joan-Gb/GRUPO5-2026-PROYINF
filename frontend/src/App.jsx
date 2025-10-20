@@ -1,24 +1,24 @@
 import { useState } from "react";
-import LoanRequest from "./components/LoanRequest";
+import './App.css';
 import LoginForm from "./components/LoginForm";
 import LoanSimulator from "./components/LoanSimulator";
+import Panel from "./components/Panel";
 
 export default function App() {
   const [activeComponent, setActiveComponent] = useState("login");
 
-  const handleLogin = (data) => {
-    if (data.simulate) {
-      setActiveComponent("loan");
-    } else {
-      // Aquí podrías validar credenciales
-      setActiveComponent("loan");
-    }
+  const handleLogin = () => {
+    setActiveComponent("loan");
   };
 
-
   return (
-    <div>
-      {activeComponent === "login" && <LoginForm onSubmit={handleLogin} />}
+    <div className="app-container">
+      {activeComponent === "login" && (
+        <Panel>
+          <LoginForm onSubmit={handleLogin} />
+        </Panel>
+      )}
+
       {activeComponent === "loan" && <LoanSimulator />}
     </div>
   );

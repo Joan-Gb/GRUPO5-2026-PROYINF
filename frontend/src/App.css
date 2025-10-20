@@ -1,1 +1,34 @@
+/* App.css */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('./R.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* App.css */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Ajusta el espacio a la derecha del panel fijo */
+.right-container {
+  margin-left: 40vw;          /* deja espacio al panel */
+  width: 60vw;                 /* ocupa el resto */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
+}
+
+.result-container {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}

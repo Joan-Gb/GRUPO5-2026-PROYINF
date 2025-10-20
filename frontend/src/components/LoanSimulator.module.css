@@ -1,0 +1,166 @@
+.container {
+  padding-top: 10vh;
+  display: flex;
+  flex-direction: column;   /* todo en columna */
+  align-items: center;      /* centrado horizontal */
+  gap: 16px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.alert {
+  background: #eef6ff;
+  border: 1px solid #cce0ff;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 8px 0;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  width: 100%;
+  text-align: left;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.helperText {
+  font-size: 0.8rem;
+  color: #666;
+  width: 100%;
+  text-align: left;
+  margin: -8px 0 8px 0;
+}
+
+.button {
+  background: #0077cc;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.button:hover {
+  background: #005fa3;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 100%;
+}
+
+.result {
+  margin-top: 16px;
+  text-align: center;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 12px;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.resultTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.resultText {
+  font-size: 1rem;
+  color: #333;
+}
+
+.wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* área derecha del simulador */
+.rightContainer {
+  margin-left: 40vw;   /* deja espacio para el panel fijo */
+  width: 60vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resultContainer {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 30%;
+  max-width: 500px;
+  text-align: center;
+  height: 40vh;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.resultContainer {
+  position: relative; /* 👈 permite ubicar el botón dentro */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón arriba a la derecha dentro del contenedor */
+.toggleButtonTopRight {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #0077cc94;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.toggleButtonTopRight:hover {
+  background-color: #0077cc;
+}
