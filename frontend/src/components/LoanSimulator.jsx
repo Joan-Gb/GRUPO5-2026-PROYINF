@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 
@@ -13,7 +13,7 @@ export default function LoanSimulator() {
 
   const MIN_AMOUNT = 500000;
   const MAX_AMOUNT = 150000000;
-  const INTEREST_RATE = 0.012; // 1.2% mensual
+  const INTEREST_RATE = 0.03; // 3% mensual
 
   const handleCalculate = () => {
     setError("");
@@ -42,6 +42,116 @@ export default function LoanSimulator() {
       costoTotal: costoTotal.toFixed(0),
     });
   };
+
+  const handleSave = async () => {
+    if (!result) return;
+    try {
+      const payload = {
+        monto: Number(result.monto),
+        plazo: Number(result.plazo),
+        cuota: Number(result.cuota),
+        tasa: Number(result.tasa),
+        cae: Number(result.cae),
+        seguros_voluntarios: false,
+        es_solicitud_formal: false,
+      };
+      // por ahora estaremos guardando localmente, cambiar para la entrega 4
+      const localEntry = {
+        fecha: new Date().toISOString(),
+        monto: result.monto,
+        plazo: result.plazo,
+        cuota: result.cuota,
+        tasa: result.tasa,
+        cae: result.cae,
+        costoTotal: result.costoTotal,
+        serverId: null,
+      };
+
+      
+      let serverData = null;
+      try {
+        const res = await fetch('/api/simulations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          serverData = await res.json();
+          if (serverData && serverData.data && serverData.data.simulacion_id) {
+            localEntry.serverId = serverData.data.simulacion_id;
+          }
+        }
+      } catch (err) {
+        // por ahora solo guardar localmente
+        console.warn('Backend save failed, storing locally only', err);
+      }
+
+      saveLocalSimulation(localEntry);
+      setHistory((h) => [localEntry, ...h]);
+
+      alert('Simulación guardada correctamente' + (localEntry.serverId ? ` (ID: ${localEntry.serverId})` : ' (guardada localmente)'));
+    } catch (err) {
+      console.error(err);
+      alert('No se pudo guardar la simulación');
+    }
+  };
+
+  // Cookies
+  const COOKIE_NAME = 'simulations_history_v1';
+
+  function readCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) {
+      try {
+        return JSON.parse(decodeURIComponent(match[2]));
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  function writeCookie(name, value, days = 30) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/`;
+  }
+
+  function saveLocalSimulation(entry) {
+    const existing = readCookie(COOKIE_NAME) || [];
+    
+    const updated = [entry, ...existing].slice(0, 30);
+    writeCookie(COOKIE_NAME, updated, 365);
+  }
+
+  // cargar cookie al iniciar
+  useEffect(() => {
+    try {
+      const saved = readCookie(COOKIE_NAME) || [];
+      setHistory(saved);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  // Format fecha ISO -> 'HH:MM:SS - DD/MM/YYYY'
+  function formatFecha(iso) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      const pad = (n) => String(n).padStart(2, '0');
+      const hh = pad(d.getHours());
+      const mm = pad(d.getMinutes());
+      const ss = pad(d.getSeconds());
+      const dd = pad(d.getDate());
+      const mo = pad(d.getMonth() + 1);
+      const yyyy = d.getFullYear();
+      return `${dd}/${mo}/${yyyy} - ${hh}:${mm}:${ss}`;
+    } catch (e) {
+      return iso;
+    }
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -116,7 +226,7 @@ export default function LoanSimulator() {
                 <ul className={styles.historyList}>
                   {history.map((item, i) => (
                     <li key={i} className={styles.historyItem}>
-                      <b>{item.fecha}</b> — Monto: ${item.monto.toLocaleString()} / {item.plazo} cuotas / Cuota: ${parseInt(item.cuota).toLocaleString()}
+                      <b>{formatFecha(item.fecha)}</b> — Monto: ${item.monto.toLocaleString()} / {item.plazo} cuotas / Cuota: ${parseInt(item.cuota).toLocaleString()}
                     </li>
                   ))}
                 </ul>
@@ -131,6 +241,13 @@ export default function LoanSimulator() {
               <p><b>Tasa de interés:</b> {result ? `${result.tasa}% mensual` : "-"}</p>
               <p><b>CAE:</b> {result ? `${result.cae}%` : "-"}</p>
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
+              {result && (
+                <div style={{ marginTop: 12 }}>
+                  <button onClick={handleSave} className={styles.button}>
+                    Guardar Simulación
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

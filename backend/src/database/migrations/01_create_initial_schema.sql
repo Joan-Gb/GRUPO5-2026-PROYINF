@@ -5,6 +5,7 @@ CREATE TABLE historial_simulaciones (
     plazo_meses INTEGER NOT NULL,
     tasa_interes NUMERIC(5, 4) NOT NULL,
     valor_cuota NUMERIC(10, 2) NOT NULL,
+    cae NUMERIC(7,2) NOT NULL,
     seguros_voluntarios BOOLEAN DEFAULT FALSE,
     fecha_simulacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     es_solicitud_formal BOOLEAN DEFAULT FALSE

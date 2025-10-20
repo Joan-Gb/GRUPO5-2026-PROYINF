@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   app:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -13,7 +15,7 @@ services:
     depends_on:
       - postgres_db
     volumes:
-      - ./:/app
+      - ./backend:/app
       - /app/node_modules
 
   postgres_db:
@@ -27,6 +29,18 @@ services:
       - ./backend/src/database/migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+
+  frontend:
+      build:
+        context: ./frontend 
+        dockerfile: Dockerfile
+      ports:
+        - "80:5173"
+      volumes:
+        - ./frontend:/app
+        - /app/node_modules
+      depends_on:
+        - app  
 
 volumes:
   postgres_data:
