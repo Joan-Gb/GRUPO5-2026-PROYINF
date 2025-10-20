@@ -7,5 +7,14 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173
+  ,
+    proxy: {
+      // Proxy API requests to backend service in Docker network
+      '/api': {
+        target: 'http://app:3000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   }
 })
