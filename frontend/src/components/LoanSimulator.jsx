@@ -13,7 +13,7 @@ export default function LoanSimulator() {
 
   const MIN_AMOUNT = 500000;
   const MAX_AMOUNT = 150000000;
-  const INTEREST_RATE = 0.012; // 1.2% mensual
+  const INTEREST_RATE = 0.03; // 3% mensual
 
   const handleCalculate = () => {
     setError("");
