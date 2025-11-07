@@ -1,51 +1,59 @@
-/* LoanRequest.css */
+/* LoanRequest.module.css */
 
 .loan-request-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .loan-request-container h2 {
-    text-align: center;
-    text-transform: uppercase;
-    color: #374151;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
 }
 
 .field label {
-    font-weight: bold;
-    color: #374151;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
 }
 
 .field input {
-    padding: 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.field input:focus {
+  border-color: #0078d4;
+  outline: none;
 }
 
 button {
-    background: #1e3a8a;
-    color: white;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
+  width: 100%;
+  padding: 12px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
-    background: #172554;
+  background-color: #005ea2;
 }

@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
-
+import './LoanRequest.module.css';
+ 
 function LoanRequest() {
     const [amount, setAmount] = useState('');
     const [term, setTerm] = useState('');
