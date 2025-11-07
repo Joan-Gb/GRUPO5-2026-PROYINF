@@ -42,3 +42,30 @@ CREATE TABLE evaluaciones_riesgo (
     motivo_rechazo VARCHAR(255),
     apetito_riesgo_umbral INTEGER
 );
+
+CREATE TABLE prestamos (
+    prestamo_id SERIAL PRIMARY KEY,
+    cliente_id VARCHAR(20) REFERENCES clientes(cliente_id) NOT NULL,
+    solicitud_id INTEGER REFERENCES solicitudes(solicitud_id) UNIQUE NOT NULL,
+    monto_aprobado NUMERIC(15, 2) NOT NULL,
+    plazo_meses INTEGER NOT NULL,
+    tasa_anual NUMERIC(5, 4),
+    fecha_activacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    estado_credito VARCHAR(50) NOT NULL,
+    UNIQUE (cliente_id, fecha_activacion)
+);
+
+CREATE TABLE cuotas (
+    cuota_id SERIAL PRIMARY KEY,
+    prestamo_id INTEGER REFERENCES prestamos(prestamo_id) NOT NULL,
+    numero_cuota INTEGER NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    monto_cuota NUMERIC(15, 2) NOT NULL,
+    capital_amortizado NUMERIC(12, 2),
+    interes NUMERIC(12, 2),
+    saldo_restante NUMERIC(12, 2),
+    estado VARCHAR(50) DEFAULT 'Pendiente',
+    fecha_pago_efectivo DATE,
+    UNIQUE (prestamo_id, numero_cuota)
+);
+

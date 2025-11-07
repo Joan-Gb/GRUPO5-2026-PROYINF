@@ -1,20 +1,22 @@
-// backend/src/app.js
 import express from "express";
 import cors from "cors";
-import routes from "./routes/index.js";
+
+import simulationRoutes from "./routes/simulations.js";
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+app.use(cors()); 
 app.use(express.json());
 
-// Rutas
-app.use("/api", routes);
 
-// Manejo de errores básico
+app.use("/api/simulations", simulationRoutes); 
+
+app.get("/api", (req, res) => {
+    res.json({ message: "API de Préstamos funcionando. Los servicios están disponibles en /api/simulations." });
+});
+
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error("Error en la aplicación:", err.stack);
   res.status(500).json({ error: "Internal Server Error" });
 });
 
