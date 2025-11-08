@@ -47,6 +47,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
     if (!result) return;
     try {
       const payload = {
+        cliente_id: clienteId || 'CLIENTE_WEB',
         monto: Number(result.monto),
         plazo: Number(result.plazo),
         cuota: Number(result.cuota),
@@ -64,7 +65,8 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
         tasa: result.tasa,
         cae: result.cae,
         costoTotal: result.costoTotal,
-        serverId: null,
+  serverId: null,
+  cliente_id: clienteId || null,
       };
 
       
