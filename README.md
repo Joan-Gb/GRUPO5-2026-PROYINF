@@ -39,7 +39,3 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 
 - Para ejecutar el proyecto realizar: `docker-compose up --build`.
 - Luego ir a `localhost` en el browser.
-- Para ejecutar el frontend poner en terminal:
-- cd frontend
-- npm install
-- npm run dev
