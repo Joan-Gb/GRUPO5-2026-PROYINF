@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "./components/LoginForm";
 import LoanSimulator from "./components/LoanSimulator";
 import LoanRequest from "./components/LoanRequest";
@@ -10,6 +10,17 @@ export default function App() {
   const [activeComponent, setActiveComponent] = useState("login");
   const [clienteId, setClienteId] = useState(null);
   const [lastSimulation, setLastSimulation] = useState(null);
+
+  // Restore persisted login on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('clienteId') || sessionStorage.getItem('clienteId');
+      if (saved) {
+        setClienteId(saved);
+        setActiveComponent('loan');
+      }
+    } catch (_) { /* ignore */ }
+  }, []);
 
   const handleLogin = async ({ rut, password, remember, simulate }) => {
     if (simulate) {
@@ -33,6 +44,16 @@ export default function App() {
         throw new Error(data.error || 'No se pudo iniciar sesión');
       }
       setClienteId(data.cliente_id);
+      // Persist depending on remember flag
+      try {
+        if (remember) {
+          localStorage.setItem('clienteId', data.cliente_id);
+          sessionStorage.removeItem('clienteId');
+        } else {
+          sessionStorage.setItem('clienteId', data.cliente_id);
+          localStorage.removeItem('clienteId');
+        }
+      } catch (_) { /* ignore */ }
       setActiveComponent("loan");
     } catch (e) {
       console.error('Error login:', e);
@@ -43,6 +64,15 @@ export default function App() {
   const goToLoanRequest = (simulationData) => {
     setLastSimulation(simulationData);
     setActiveComponent("loan-request");
+  };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('clienteId');
+      sessionStorage.removeItem('clienteId');
+    } catch (_) { /* ignore */ }
+    setClienteId(null);
+    setActiveComponent('login');
   };
 
   return (
@@ -57,6 +87,7 @@ export default function App() {
         <LoanSimulator 
             onRequestLoan={goToLoanRequest} 
             onBackToMenu={() => setActiveComponent("menu")}
+            clienteId={clienteId}
         />
       )}
 
@@ -64,7 +95,7 @@ export default function App() {
         <Panel>
           <Menu
             onNavigate={(component) => setActiveComponent(component)}
-            onLogout={() => setActiveComponent("login")}
+            onLogout={handleLogout}
           />
         </Panel>
       )}

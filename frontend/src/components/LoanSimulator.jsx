@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 
-export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
+export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
   const [daysToStart, setDaysToStart] = useState("");
@@ -65,8 +65,8 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
         tasa: result.tasa,
         cae: result.cae,
         costoTotal: result.costoTotal,
-  serverId: null,
-  cliente_id: clienteId || null,
+        serverId: null,
+        cliente_id: clienteId || null,
       };
 
       

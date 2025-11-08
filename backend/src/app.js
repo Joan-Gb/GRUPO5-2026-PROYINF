@@ -3,6 +3,7 @@ import cors from "cors";
 
 import simulationRoutes from "./routes/simulations.js";
 import authRoutes from "./routes/auth.js";
+import scoringRoutes from "./routes/scoring.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api/simulations", simulationRoutes); 
 app.use("/api/auth", authRoutes);
+app.use("/api/scoring", scoringRoutes);
 
 app.get("/api", (req, res) => {
     res.json({ message: "API de Préstamos funcionando. Los servicios están disponibles en /api/simulations." });
