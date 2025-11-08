@@ -1,11 +1,12 @@
 .container {
   max-width: 480px;
-  margin: 40px auto;
+  margin: 100px auto 40px auto; 
   background: rgba(255, 255, 255, 0.9);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
+
 
 .header {
   font-size: 1.4rem;
@@ -41,4 +42,27 @@
 
 .button:hover {
   background-color: #0a48b9;
+}
+
+.toggleButtonTopLeft {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.toggleButtonTopLeft:hover {
+  background-color: #0d47a1;
+}
+
+.container_main {
+  height: 100vh;
+  align-content:flex-start;
 }
