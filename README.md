@@ -41,3 +41,5 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 
 - Para ejecutar el proyecto realizar: `docker-compose up --build`.
 - Luego ir a `localhost` en el browser.
+
+- Tener en cuenta que al ejecutar `docker-compose up --build` se demora bastante tiempo en iniciarse.

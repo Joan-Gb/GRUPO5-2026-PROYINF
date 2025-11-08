@@ -14,7 +14,8 @@ CREATE TABLE historial_simulaciones (
 CREATE TABLE clientes (
     cliente_id VARCHAR(20) PRIMARY KEY,
     nombre_completo VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     direccion_residencia VARCHAR(255),
     fecha_nacimiento DATE,
