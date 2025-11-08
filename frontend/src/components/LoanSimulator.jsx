@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 
-export default function LoanSimulator({ onRequestLoan }) {
+export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
   const [daysToStart, setDaysToStart] = useState("");
@@ -158,6 +158,12 @@ export default function LoanSimulator({ onRequestLoan }) {
       {/* Panel izquierdo (simulador) */}
       <div className={styles.leftContainer}>
       <Panel>
+        <button 
+          className={styles.toggleButtonTopLeft} 
+          onClick={onBackToMenu}
+        >
+          ⬅ Menú
+        </button> 
         <div className={styles.container}>
           <h2 className={styles.header}>Simula y Contrata</h2>
 
