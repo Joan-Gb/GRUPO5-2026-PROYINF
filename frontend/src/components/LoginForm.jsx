@@ -64,10 +64,6 @@ export default function LoginForm({ onSubmit }) {
             </button>
 
             <p className={styles.footer}>
-              ¿Quieres ser cliente?{" "}
-              <a href="#" onClick={handleSimulate}>
-                Simula
-              </a>
             </p>
 
             <img src="/logo-usm.png" alt="Logo USM" className={styles.logo} />

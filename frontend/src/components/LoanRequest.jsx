@@ -1,37 +1,20 @@
-import { useState } from 'react';
-import './LoanRequest.module.css';
- 
-function LoanRequest() {
-    const [amount, setAmount] = useState('');
-    const [term, setTerm] = useState('');
-    const [purpose, setPurpose] = useState('');
+import styles from "./LoanRequest.module.css";
 
-    const handleRequest = () => {
-        alert(`Solicitud enviada:\nMonto: $${amount}\nPlazo: ${term} meses\nMotivo: ${purpose}`);
-    };
+export default function LoanRequest({ simulation }) {
+  if (!simulation) return <p>No hay información del crédito seleccionada.</p>;
 
-    return (
-        <div className="loan-request-container">
-        <h2>Solicitud de Préstamo</h2>
-
-        <div className="field">
-            <label>Monto solicitado ($):</label>
-            <input type="number" value={amount} onChange={e => setAmount(e.target.value)} />
-        </div>
-
-        <div className="field">
-            <label>Plazo deseado (meses):</label>
-            <input type="number" value={term} onChange={e => setTerm(e.target.value)} />
-        </div>
-
-        <div className="field">
-            <label>Motivo del préstamo:</label>
-            <input type="text" value={purpose} onChange={e => setPurpose(e.target.value)} />
-        </div>
-
-        <button onClick={handleRequest}>Solicitar</button>
-        </div>
-    );
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.header}>Confirmar Solicitud</h2>
+      <div className={styles.details}>
+        <p><b>Monto:</b> ${simulation.monto.toLocaleString()}</p>
+        <p><b>Plazo:</b> {simulation.plazo} cuotas</p>
+        <p><b>Cuota mensual:</b> ${parseInt(simulation.cuota).toLocaleString()}</p>
+        <p><b>Tasa:</b> {simulation.tasa}%</p>
+        <p><b>CAE:</b> {simulation.cae}%</p>
+        <p><b>Costo total:</b> ${parseInt(simulation.costoTotal).toLocaleString()}</p>
+      </div>
+      <button className={styles.button}>Confirmar Solicitud</button>
+    </div>
+  );
 }
-
-export default LoanRequest;

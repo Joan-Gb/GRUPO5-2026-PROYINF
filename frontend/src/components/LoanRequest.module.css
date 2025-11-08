@@ -1,59 +1,44 @@
-/* LoanRequest.module.css */
-
-.loan-request-container {
-  max-width: 400px;
+.container {
+  max-width: 480px;
   margin: 40px auto;
-  padding: 24px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.loan-request-container h2 {
+.header {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 1.5rem;
   text-align: center;
-  margin-bottom: 24px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.details b {
   color: #333;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-}
-
-.field label {
-  margin-bottom: 6px;
-  font-weight: 500;
-  color: #555;
-}
-
-.field input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.2s ease;
-}
-
-.field input:focus {
-  border-color: #0078d4;
-  outline: none;
-}
-
-button {
+.button {
   width: 100%;
-  padding: 12px;
-  background-color: #0078d4;
-  color: white;
+  padding: 1rem;
+  background-color: #0077cc;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 15px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: #005ea2;
+.button:hover {
+  background-color: #0a48b9;
 }

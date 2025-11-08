@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 
-export default function LoanSimulator() {
+export default function LoanSimulator({ onRequestLoan }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
   const [daysToStart, setDaysToStart] = useState("");
@@ -156,6 +156,7 @@ export default function LoanSimulator() {
   return (
     <div className={styles.wrapper}>
       {/* Panel izquierdo (simulador) */}
+      <div className={styles.leftContainer}>
       <Panel>
         <div className={styles.container}>
           <h2 className={styles.header}>Simula y Contrata</h2>
@@ -205,6 +206,7 @@ export default function LoanSimulator() {
           {error && <p className={styles.error}>{error}</p>}
         </div>
       </Panel>
+      </div>
 
       {/* Panel derecho */}
       <div className={styles.rightContainer}>
@@ -242,9 +244,16 @@ export default function LoanSimulator() {
               <p><b>CAE:</b> {result ? `${result.cae}%` : "-"}</p>
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
               {result && (
-                <div style={{ marginTop: 12 }}>
-                  <button onClick={handleSave} className={styles.button}>
+                <div className= {styles.buttonContainer}>
+                  <button onClick={handleSave} className={styles.button_right}>
                     Guardar Simulación
+                  </button>
+                                    <button
+                    onClick={() => onRequestLoan(result)}
+                    className={styles.button_right}
+                    style={{ marginLeft: 8 }}
+                  >
+                    Solicitar Préstamo
                   </button>
                 </div>
               )}
