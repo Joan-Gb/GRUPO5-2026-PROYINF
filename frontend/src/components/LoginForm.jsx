@@ -14,7 +14,6 @@ export default function LoginForm({ onSubmit }) {
 
   const handleSimulate = (e) => {
     e.preventDefault();
-    // Aquí no necesitas credenciales, solo redirigir a LoanRequest
     onSubmit({ simulate: true });
   };
 

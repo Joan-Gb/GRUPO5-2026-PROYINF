@@ -7,22 +7,35 @@ import "./App.css";
 
 export default function App() {
   const [activeComponent, setActiveComponent] = useState("login");
+  const [clienteId, setClienteId] = useState(null);
   const [lastSimulation, setLastSimulation] = useState(null);
 
-  const handleLogin = ({ rut, password, remember, simulate }) => {
+  const handleLogin = async ({ rut, password, remember, simulate }) => {
     if (simulate) {
       // flujo de simulación directa
       setActiveComponent("loan-request");
       return;
     }
 
-    // Validación simple de credenciales
-    if (rut.trim() !== "" && password.trim() !== "") {
-      /*  backend login    */
-      console.log("Login correcto:", { rut, password, remember });
-      setActiveComponent("loan"); // redirige al simulador
-    } else {
+    if (!rut || !password) {
       alert("Debes ingresar RUT y contraseña válidos");
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rut, password })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'No se pudo iniciar sesión');
+      }
+      setClienteId(data.cliente_id);
+      setActiveComponent("loan");
+    } catch (e) {
+      console.error('Error login:', e);
+      alert(e.message || 'Error en el inicio de sesión');
     }
   };
 
@@ -40,7 +53,7 @@ export default function App() {
       )}
 
       {activeComponent === "loan" && (
-        <LoanSimulator onRequestLoan={goToLoanRequest} />
+        <LoanSimulator onRequestLoan={goToLoanRequest} clienteId={clienteId} />
       )}
 
       {activeComponent === "loan-request" && (
