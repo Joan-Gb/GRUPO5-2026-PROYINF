@@ -15,6 +15,8 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 ## Videos
 [Link](https://youtu.be/PSws_HESvmw) al video del prototipo del Hito 3
 
+[Link](https://youtu.be/218qJ4li7dg) al video del prototipo del Hito 4
+
 
 ## Aspectos técnicos relevantes
 ### Requisitos Previos
@@ -39,3 +41,5 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 
 - Para ejecutar el proyecto realizar: `docker-compose up --build`.
 - Luego ir a `localhost` en el browser.
+
+- Tener en cuenta que al ejecutar `docker-compose up --build` se demora bastante tiempo en iniciarse.

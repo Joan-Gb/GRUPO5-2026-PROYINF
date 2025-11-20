@@ -5,6 +5,8 @@ import simulationRoutes from "./routes/simulations.js";
 import paymentRoutes from "./routes/payments.js";
 
 import riskRoutes from "./routes/risk.js";
+import authRoutes from "./routes/auth.js";
+import scoringRoutes from "./routes/scoring.js";
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use("/api/simulations", simulationRoutes);
 app.use("/api/payments", paymentRoutes);
 
 app.use("/api/risk", riskRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/scoring", scoringRoutes);
 
 app.get("/api", (req, res) => {
     res.json({ message: "API de Préstamos funcionando. Los servicios están disponibles en /api/simulations." });

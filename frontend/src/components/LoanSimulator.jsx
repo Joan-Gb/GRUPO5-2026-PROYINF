@@ -3,7 +3,7 @@ import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 import OCRScanner from './OCRScanner';
 
-export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
+export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
   const [daysToStart, setDaysToStart] = useState("");
@@ -49,6 +49,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
     if (!result) return;
     try {
       const payload = {
+        cliente_id: clienteId || 'CLIENTE_WEB',
         monto: Number(result.monto),
         plazo: Number(result.plazo),
         cuota: Number(result.cuota),
@@ -67,6 +68,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu}) {
         cae: result.cae,
         costoTotal: result.costoTotal,
         serverId: null,
+        cliente_id: clienteId || null,
       };
 
       
