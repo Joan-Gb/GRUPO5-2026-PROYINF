@@ -17,6 +17,9 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 
 [Link](https://youtu.be/218qJ4li7dg) al video del prototipo del Hito 4
 
+[Link](https://youtu.be/Ng4dSpj5rgA) al video del prototipo del Hito 5
+
+
 
 ## Aspectos técnicos relevantes
 ### Requisitos Previos
