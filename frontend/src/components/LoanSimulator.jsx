@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
+import OCRScanner from './OCRScanner';
 
 export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
@@ -10,6 +11,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
   const [error, setError] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [history, setHistory] = useState([]);
+  const [rutCliente, setRutCliente] = useState("");
 
   const MIN_AMOUNT = 500000;
   const MAX_AMOUNT = 150000000;
@@ -175,6 +177,14 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
           </div>
 
           <h3 className={styles.sectionTitle}>Simula tu Crédito de Consumo</h3>
+
+          <div style={{ marginBottom: '20px' }}>
+            <OCRScanner onDataScanned={(rutEscaneado) => {
+            console.log("RUT recibido:", rutEscaneado);
+            setRutCliente(rutEscaneado);
+            alert("¡RUT Detectado y guardado!: " + rutEscaneado);
+            }} />
+          </div>
 
           <label className={styles.label}>¿Cuál es el monto que quieres?</label>
           <input
