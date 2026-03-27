@@ -11,7 +11,7 @@ Este es el repositorio del *Grupo 5*, cuyos integrantes son:
 
 ## Wiki
 
-Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod88/GRUPO18-2025-PROYINF/wiki)
+Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod88/GRUPO5-2026-PROYINF/wiki)
 
 ## Videos
 [Link](https://youtu.be/PSws_HESvmw) al video del prototipo del Hito 3
