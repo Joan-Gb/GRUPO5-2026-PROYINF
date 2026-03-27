@@ -6,7 +6,7 @@ Este es el repositorio del *Grupo 5*, cuyos integrantes son:
 * Amaro Alarcón - 202373594-9
 * Máximo Castillo - 202304518-7
 * Diego Duarte - 202173582-8
-* Joan Farfan - ?
+* Joan Farfan - 202330511-1
 * **Tutor**: Benjamín Daza
 
 ## Wiki
