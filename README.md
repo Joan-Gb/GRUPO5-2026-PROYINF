@@ -47,3 +47,6 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/diegod
 - Luego ir a `localhost` en el browser.
 
 - Tener en cuenta que al ejecutar `docker-compose up --build` se demora bastante tiempo en iniciarse.
+
+### Identificación del Proyecto Base
+Este repositorio corresponde al trabajo del **Grupo 5** y es la continuación directa del proyecto base **Sistema de Simulación de Prestamos**, desarrollado originalmente durante el semestre **2025-2**.
