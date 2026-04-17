@@ -5,6 +5,7 @@ import LoanRequest from "./components/LoanRequest";
 import Panel from "./components/Panel";
 import "./App.css";
 import Menu from "./components/Menu";
+import SuggestedSimulator from "./components/SuggestedSimulator";
 
 export default function App() {
   const [activeComponent, setActiveComponent] = useState("login");
@@ -84,12 +85,20 @@ export default function App() {
       )}
 
       {activeComponent === "loan" && (
-        <LoanSimulator 
-            onRequestLoan={goToLoanRequest} 
-            onBackToMenu={() => setActiveComponent("menu")}
-            clienteId={clienteId}
+        <LoanSimulator
+          onRequestLoan={goToLoanRequest}
+          onBackToMenu={() => setActiveComponent("menu")}
+          clienteId={clienteId}
         />
       )}
+
+      {activeComponent === "suggested-loan" && (
+        <SuggestedSimulator
+          onBackToMenu={() => setActiveComponent("menu")}
+          clienteId={clienteId}
+        />
+      )}
+
 
       {activeComponent === "menu" && (
         <Panel>
@@ -102,7 +111,7 @@ export default function App() {
 
       {activeComponent === "loan-request" && (
         <Panel>
-          <LoanRequest 
+          <LoanRequest
             simulation={lastSimulation}
             onBackToSimulator={() => setActiveComponent("loan")}
           />

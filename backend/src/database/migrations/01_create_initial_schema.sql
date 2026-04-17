@@ -8,7 +8,10 @@ CREATE TABLE historial_simulaciones (
     cae NUMERIC(7,2) NOT NULL,
     seguros_voluntarios BOOLEAN DEFAULT FALSE,
     fecha_simulacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    es_solicitud_formal BOOLEAN DEFAULT FALSE
+    es_solicitud_formal BOOLEAN DEFAULT FALSE,
+    renta_liquida NUMERIC(15,2),
+    antiguedad_laboral INTEGER,
+    es_oferta_sugerida BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE clientes (
