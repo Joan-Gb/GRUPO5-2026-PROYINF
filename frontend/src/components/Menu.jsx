@@ -16,16 +16,23 @@ export default function Menu({ onNavigate, onLogout }) {
 
         <button
           className={styles.button}
+          onClick={() => onNavigate("suggested-loan")}
+        >
+          Crédito Personalizado
+        </button>
+
+        <button
+          className={styles.button}
           onClick={() => onNavigate("history")}
         >
-           Ver Historial
+          Ver Historial
         </button>
 
         <button
           className={styles.button}
           onClick={() => onNavigate("requests")}
         >
-           Solicitudes Pendientes
+          Solicitudes Pendientes
         </button>
 
         <button
