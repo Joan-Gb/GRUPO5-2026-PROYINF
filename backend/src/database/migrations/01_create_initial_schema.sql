@@ -11,8 +11,11 @@ CREATE TABLE historial_simulaciones (
     es_solicitud_formal BOOLEAN DEFAULT FALSE,
     renta_liquida NUMERIC(15,2),
     antiguedad_laboral INTEGER,
-    es_oferta_sugerida BOOLEAN DEFAULT FALSE
-);
+    es_oferta_sugerida BOOLEAN DEFAULT FALSE,
+    probabilidad_aprobacion VARCHAR(20) DEFAULT 'Pendiente',
+    costo_total NUMERIC(15, 2),
+    nombre_simulacion VARCHAR(100)
+);;
 
 CREATE TABLE clientes (
     cliente_id VARCHAR(20) PRIMARY KEY,
