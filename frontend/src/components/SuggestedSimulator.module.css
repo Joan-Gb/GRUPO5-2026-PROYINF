@@ -1,0 +1,135 @@
+/* Copiado de tu estética original para mantener consistencia */
+.wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    gap: 40px;
+}
+
+.leftContainer {
+    flex: 0 0 auto;
+    width: 40vw;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rightContainer {
+    flex: 1;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    padding-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #1976d2;
+    text-transform: uppercase;
+}
+
+.alert {
+    background: #eef6ff;
+    border: 1px solid #cce0ff;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #444;
+    width: 100%;
+    text-align: left;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.button {
+    background: #0077cc;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.button:hover {
+    background: #005fa3;
+}
+
+.resultContainer {
+    width: 350px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    text-align: center;
+}
+
+.offerHighlight {
+    background: #f0f7ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px dashed #0077cc;
+}
+
+.offerValue {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0077cc;
+    margin: 0;
+}
+
+.legalNote {
+    margin-top: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.toggleButtonTopLeft {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
