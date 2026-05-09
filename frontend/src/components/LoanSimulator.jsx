@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 import OCRScanner from './OCRScanner';
+import ApprovalProbability from './ApprovalProbability'; // <-- Importamos el componente visual
 
 export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
@@ -12,6 +13,9 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
   const [showHistory, setShowHistory] = useState(false);
   const [history, setHistory] = useState([]);
   const [rutCliente, setRutCliente] = useState("");
+  
+  // <-- Estado para manejar la probabilidad (Mock del Frontend)
+  const [riskData, setRiskData] = useState({ level: null, suggestion: null }); 
 
   const MIN_AMOUNT = 500000;
   const MAX_AMOUNT = 150000000;
@@ -20,6 +24,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
   const handleCalculate = () => {
     setError("");
     setResult(null);
+    setRiskData({ level: null, suggestion: null }); // Limpiamos el riesgo anterior
 
     const amt = parseInt(amount);
     if (isNaN(amt) || amt < MIN_AMOUNT || amt > MAX_AMOUNT) {
@@ -34,6 +39,21 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
     const cuota = amt * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     const cae = ((Math.pow(1 + r, 12) - 1) * 100).toFixed(2);
     const costoTotal = cuota * n;
+
+    // --- INICIO MOCK DE PROBABILIDAD (Solo para probar diseño) ---
+    // Simularemos la respuesta dependiendo del monto para que pruebes los colores
+    let mockLevel = 'Alta';
+    let mockSuggestion = null;
+
+    if (amt > 50000000) {
+      mockLevel = 'Baja';
+      mockSuggestion = 'Te sugerimos solicitar un monto menor para mejorar la probabilidad de aprobación.';
+    } else if (amt > 15000000) {
+      mockLevel = 'Media';
+    }
+
+    setRiskData({ level: mockLevel, suggestion: mockSuggestion });
+    // --- FIN MOCK DE PROBABILIDAD ---
 
     setResult({
       monto: amt,
@@ -71,7 +91,6 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
         cliente_id: clienteId || null,
       };
 
-      
       let serverData = null;
       try {
         const res = await fetch('/api/simulations', {
@@ -261,12 +280,21 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
               <p><b>Tasa de interés:</b> {result ? `${result.tasa}% mensual` : "-"}</p>
               <p><b>CAE:</b> {result ? `${result.cae}%` : "-"}</p>
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
+              
+              {/* <-- RENDERIZADO DEL INDICADOR VISUAL --> */}
+              {result && (
+                <ApprovalProbability 
+                  riskLevel={riskData.level} 
+                  suggestion={riskData.suggestion} 
+                />
+              )}
+
               {result && (
                 <div className= {styles.buttonContainer}>
                   <button onClick={handleSave} className={styles.button_right}>
                     Guardar Simulación
                   </button>
-                                    <button
+                  <button
                     onClick={() => onRequestLoan(result)}
                     className={styles.button_right}
                     style={{ marginLeft: 8 }}
