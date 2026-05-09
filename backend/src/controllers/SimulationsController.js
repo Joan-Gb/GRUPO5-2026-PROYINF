@@ -69,10 +69,21 @@ const simularOfertaSugerida = async (req, res) => {
         const montoMaximoSugerido = cuotaMaximaPermitida * ((1 - Math.pow(1 + tasaInteresMensual, -plazo_meses)) / tasaInteresMensual);
         const montoFinal = Math.round(montoMaximoSugerido * 100) / 100;
 
+        let probabilidad_aprobacion = "Alta";
+        let sugerencia_mejora = "Tu perfil es óptimo. Tienes altas chances de aprobación.";
+
+        if (antiguedad_laboral < 12) {
+            probabilidad_aprobacion = "Baja";
+            sugerencia_mejora = "Tienes menos de 1 año de antigüedad laboral. Te sugerimos complementar rentas o esperar.";
+        } else if (renta_liquida < 600000) {
+            probabilidad_aprobacion = "Media";
+            sugerencia_mejora = "Tu renta líquida limita el monto máximo. Evita tener otras deudas financieras.";
+        }
+
         const query = `
             INSERT INTO historial_simulaciones 
-            (cliente_id, monto_solicitado, plazo_meses, tasa_interes, valor_cuota, cae, renta_liquida, antiguedad_laboral, es_oferta_sugerida) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+            (cliente_id, monto_solicitado, plazo_meses, tasa_interes, valor_cuota, cae, renta_liquida, antiguedad_laboral, es_oferta_sugerida, probabilidad_aprobacion) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
             RETURNING *;
         `;
         
@@ -85,7 +96,8 @@ const simularOfertaSugerida = async (req, res) => {
             cae, 
             renta_liquida, 
             antiguedad_laboral, 
-            true
+            true, 
+            probabilidad_aprobacion
         ];
 
         const result = await pool.query(query, values);
@@ -93,7 +105,10 @@ const simularOfertaSugerida = async (req, res) => {
         return res.status(201).json({
             mensaje: "Oferta sugerida generada con éxito",
             oferta: result.rows[0],
-            nota_legal: "Esta es una oferta sugerida sujeta a validación de antecedentes."
+            evaluacion_riesgo: {
+                probabilidad: probabilidad_aprobacion,
+                sugerencia: sugerencia_mejora
+            }
         });
 
     } catch (error) {
