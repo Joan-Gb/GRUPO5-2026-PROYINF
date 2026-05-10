@@ -125,6 +125,7 @@
   height: 100%;
   justify-content: center;        /* centra horizontalmente */
   align-items: center;            /* centra verticalmente */
+  color: #333;
 }
 
 

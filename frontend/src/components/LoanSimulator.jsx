@@ -2,28 +2,50 @@ import React, { useState, useEffect } from "react";
 import Panel from "./Panel";
 import styles from "./LoanSimulator.module.css";
 import OCRScanner from './OCRScanner';
+import ApprovalProbability from './ApprovalProbability';
 
 export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
   const [daysToStart, setDaysToStart] = useState("");
+  // Nuevos estados requeridos por el backend
+  const [rentaLiquida, setRentaLiquida] = useState("");
+  const [antiguedad, setAntiguedad] = useState("");
+
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [history, setHistory] = useState([]);
   const [rutCliente, setRutCliente] = useState("");
+  
+  // Estado para manejar la probabilidad real
+  const [riskData, setRiskData] = useState({ level: null, suggestion: null }); 
 
   const MIN_AMOUNT = 500000;
   const MAX_AMOUNT = 150000000;
   const INTEREST_RATE = 0.03; // 3% mensual
 
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
     setError("");
     setResult(null);
+    setRiskData({ level: null, suggestion: null });
 
     const amt = parseInt(amount);
+    const renta = parseInt(rentaLiquida);
+    const mesesAntiguedad = parseInt(antiguedad);
+
     if (isNaN(amt) || amt < MIN_AMOUNT || amt > MAX_AMOUNT) {
       setError(`El monto debe estar entre $${MIN_AMOUNT.toLocaleString()} y $${MAX_AMOUNT.toLocaleString()}.`);
+      return;
+    }
+
+    if (isNaN(renta) || renta <= 0) {
+      setError("Por favor, ingresa una renta líquida válida para evaluar tu riesgo.");
+      return;
+    }
+
+    if (isNaN(mesesAntiguedad) || mesesAntiguedad < 0) {
+      setError("Por favor, ingresa tu antigüedad laboral en meses (ej: 12).");
       return;
     }
 
@@ -43,13 +65,42 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
       cae,
       costoTotal: costoTotal.toFixed(0),
     });
+
+    // --- CONEXIÓN REAL CON EL BACKEND ---
+    try {
+      // OJO: Asegúrate con tu equipo de que esta sea la ruta exacta definida en Express (ej: /api/simulations/oferta-sugerida)
+      const res = await fetch('/api/simulations/sugerida', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cliente_id: rutCliente || clienteId || 'CLIENTE_WEB',
+          renta_liquida: renta,
+          antiguedad_laboral: mesesAntiguedad,
+          plazo_meses: n
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.evaluacion_riesgo) {
+          setRiskData({ 
+            level: data.evaluacion_riesgo.probabilidad, 
+            suggestion: data.evaluacion_riesgo.sugerencia 
+          });
+        }
+      } else {
+        console.warn("El servidor no pudo calcular la probabilidad de riesgo.");
+      }
+    } catch (error) {
+      console.error("Error al conectar con el backend para la evaluación de riesgo:", error);
+    }
   };
 
   const handleSave = async () => {
     if (!result) return;
     try {
       const payload = {
-        cliente_id: clienteId || 'CLIENTE_WEB',
+        cliente_id: rutCliente || clienteId || 'CLIENTE_WEB',
         monto: Number(result.monto),
         plazo: Number(result.plazo),
         cuota: Number(result.cuota),
@@ -58,7 +109,7 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
         seguros_voluntarios: false,
         es_solicitud_formal: false,
       };
-      // por ahora estaremos guardando localmente, cambiar para la entrega 4
+
       const localEntry = {
         fecha: new Date().toISOString(),
         monto: result.monto,
@@ -68,10 +119,9 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
         cae: result.cae,
         costoTotal: result.costoTotal,
         serverId: null,
-        cliente_id: clienteId || null,
+        cliente_id: rutCliente || clienteId || null,
       };
 
-      
       let serverData = null;
       try {
         const res = await fetch('/api/simulations', {
@@ -82,12 +132,11 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
 
         if (res.ok) {
           serverData = await res.json();
-          if (serverData && serverData.data && serverData.data.simulacion_id) {
-            localEntry.serverId = serverData.data.simulacion_id;
+          if (serverData && serverData.simulacion_id) {
+            localEntry.serverId = serverData.simulacion_id;
           }
         }
       } catch (err) {
-        // por ahora solo guardar localmente
         console.warn('Backend save failed, storing locally only', err);
       }
 
@@ -101,7 +150,6 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
     }
   };
 
-  // Cookies
   const COOKIE_NAME = 'simulations_history_v1';
 
   function readCookie(name) {
@@ -124,12 +172,10 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
 
   function saveLocalSimulation(entry) {
     const existing = readCookie(COOKIE_NAME) || [];
-    
     const updated = [entry, ...existing].slice(0, 30);
     writeCookie(COOKIE_NAME, updated, 365);
   }
 
-  // cargar cookie al iniciar
   useEffect(() => {
     try {
       const saved = readCookie(COOKIE_NAME) || [];
@@ -139,7 +185,6 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
     }
   }, []);
 
-  // Format fecha ISO -> 'HH:MM:SS - DD/MM/YYYY'
   function formatFecha(iso) {
     if (!iso) return '';
     try {
@@ -159,7 +204,6 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
 
   return (
     <div className={styles.wrapper}>
-      {/* Panel izquierdo (simulador) */}
       <div className={styles.leftContainer}>
       <Panel>
         <button 
@@ -196,6 +240,25 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
           />
           <p className={styles.helperText}>Monto mín. $500.000 / máx. $150.000.000</p>
 
+          <label className={styles.label}>Renta Líquida Mensual ($)</label>
+          <input
+            type="number"
+            value={rentaLiquida}
+            onChange={(e) => setRentaLiquida(e.target.value)}
+            placeholder="Ej: 800000"
+            className={styles.input}
+          />
+          <p className={styles.helperText}>Necesario para evaluar probabilidad</p>
+
+          <label className={styles.label}>Antigüedad Laboral (Meses)</label>
+          <input
+            type="number"
+            value={antiguedad}
+            onChange={(e) => setAntiguedad(e.target.value)}
+            placeholder="Ej: 24"
+            className={styles.input}
+          />
+
           <label className={styles.label}>¿En cuántas cuotas?</label>
           <select
             value={installments}
@@ -226,10 +289,8 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
       </Panel>
       </div>
 
-      {/* Panel derecho */}
       <div className={styles.rightContainer}>
         <div className={styles.resultContainer}>
-          {/* Botón en esquina superior derecha */}
           <button
             className={styles.toggleButtonTopRight}
             onClick={() => setShowHistory(!showHistory)}
@@ -261,12 +322,20 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
               <p><b>Tasa de interés:</b> {result ? `${result.tasa}% mensual` : "-"}</p>
               <p><b>CAE:</b> {result ? `${result.cae}%` : "-"}</p>
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
+              
+              {result && (
+                <ApprovalProbability 
+                  riskLevel={riskData.level} 
+                  suggestion={riskData.suggestion} 
+                />
+              )}
+
               {result && (
                 <div className= {styles.buttonContainer}>
                   <button onClick={handleSave} className={styles.button_right}>
                     Guardar Simulación
                   </button>
-                                    <button
+                  <button
                     onClick={() => onRequestLoan(result)}
                     className={styles.button_right}
                     style={{ marginLeft: 8 }}
