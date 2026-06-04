@@ -14,32 +14,45 @@ export default function SuggestedSimulator({ onBackToMenu, clienteId }) {
         setError("");
         setResult(null);
 
-        if (!income || income <= 0) {
-            setError("Por favor, ingresa una renta líquida válida.");
+        const rentaNum = Number(income);
+        const antiguedadNum = Number(seniority);
+
+      
+        if (!income || rentaNum <= 0) {
+            setError("Por favor, ingresa una renta líquida mayor a $0.");
+            return;
+        }
+
+        if (!seniority || antiguedadNum < 12) {
+            setError("Debes tener al menos 12 meses de antigüedad laboral para acceder a esta evaluación.");
             return;
         }
 
         setLoading(true);
         try {
-            // Conexión con el endpoint que creó Matías
+            
             const response = await fetch("/api/simulations/sugerida", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     cliente_id: clienteId || "CLIENTE_WEB",
-                    renta_liquida: Number(income),
-                    antiguedad_laboral: Number(seniority),
+                    renta_liquida: rentaNum,
+                    antiguedad_laboral: antiguedadNum,
                     plazo_meses: Number(installments),
                 }),
             });
 
-            if (!response.ok) throw new Error("Error al calcular la oferta.");
-
             const data = await response.json();
-            // Guardamos la oferta que devuelve el backend
+
+
+            if (!response.ok) {
+                throw new Error(data.error || "La solicitud no cumple con las políticas de riesgo actuales.");
+            }
+
+
             setResult(data.oferta);
         } catch (err) {
-            setError("No se pudo conectar con el servidor. Inténtalo más tarde.");
+            setError(err.message || "No se pudo conectar con el servidor. Inténtalo más tarde.");
             console.error(err);
         } finally {
             setLoading(false);
@@ -48,7 +61,7 @@ export default function SuggestedSimulator({ onBackToMenu, clienteId }) {
 
     return (
         <div className={styles.wrapper}>
-            {/* Panel izquierdo: Entradas de Modalidad B */}
+
             <div className={styles.leftContainer}>
                 <Panel>
                     <button className={styles.toggleButtonTopLeft} onClick={onBackToMenu}>
@@ -70,12 +83,12 @@ export default function SuggestedSimulator({ onBackToMenu, clienteId }) {
                             className={styles.input}
                         />
 
-                        <label className={styles.label}>Antigüedad laboral (años)</label>
+                        <label className={styles.label}>Antigüedad laboral (meses)</label>
                         <input
                             type="number"
                             value={seniority}
                             onChange={(e) => setSeniority(e.target.value)}
-                            placeholder="Ej: 3"
+                            placeholder="Ej: 24"
                             className={styles.input}
                         />
 
@@ -103,7 +116,6 @@ export default function SuggestedSimulator({ onBackToMenu, clienteId }) {
                 </Panel>
             </div>
 
-            {/* Panel derecho: Resultado sugerido */}
             <div className={styles.rightContainer}>
                 <div className={styles.resultContainer}>
                     <h3>Tu Recomendación</h3>
@@ -118,7 +130,7 @@ export default function SuggestedSimulator({ onBackToMenu, clienteId }) {
                             <p><b>Carga financiera:</b> 25% de tu sueldo</p>
 
                             <div className={styles.legalNote}>
-                                <small>⚠️ {result.nota_legal || "Oferta sujeta a validación."}</small>
+                                <small> {result.nota_legal || "Oferta sujeta a validación."}</small>
                             </div>
 
                             <button className={styles.button_right} style={{ width: '100%', marginTop: '20px' }}>
