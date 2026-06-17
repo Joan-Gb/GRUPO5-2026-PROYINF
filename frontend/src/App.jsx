@@ -47,11 +47,12 @@ export default function App() {
       setClienteId(data.cliente_id);
       // Persist depending on remember flag
       try {
+        const safeId = String(data.cliente_id).replace(/[^a-zA-Z0-9_-]/g, '');
         if (remember) {
-          localStorage.setItem('clienteId', encodeURIComponent(String(data.cliente_id)));
+          localStorage.setItem('clienteId', safeId);
           sessionStorage.removeItem('clienteId');
         } else {
-          sessionStorage.setItem('clienteId', encodeURIComponent(String(data.cliente_id)));
+          sessionStorage.setItem('clienteId', safeId);
           localStorage.removeItem('clienteId');
         }
       } catch (_) { /* ignore */ }
