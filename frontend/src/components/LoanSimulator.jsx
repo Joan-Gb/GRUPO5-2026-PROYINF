@@ -285,28 +285,21 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
               
               {result && (
-                <ApprovalProbability 
-                  riskLevel={riskData.level} 
-                  suggestion={riskData.suggestion} 
-                />
-              )}
-
-              {result && (
-                <div className= {styles.buttonContainer}>
+              <>
+                <ApprovalProbability riskLevel={riskData.level} suggestion={riskData.suggestion} />
+                
+                <div className={styles.buttonContainer}>
                   <button onClick={handleSave} className={styles.button_right}>
                     Guardar Simulación
                   </button>
-                  <button
-                    onClick={() => onRequestLoan(result)}
-                    className={styles.button_right}
-                    style={{ marginLeft: 8 }}
-                  >
+                  <button onClick={() => onRequestLoan(result)} className={styles.button_right} style={{ marginLeft: 8 }}>
                     Solicitar Préstamo
                   </button>
                 </div>
-              )}
+              </>
+            )}
             </>
-          )}
+    )}
         </div>
       </div>
     </div>
