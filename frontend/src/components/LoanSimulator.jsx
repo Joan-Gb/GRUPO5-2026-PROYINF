@@ -4,6 +4,21 @@ import styles from "./LoanSimulator.module.css";
 import OCRScanner from './OCRScanner';
 import ApprovalProbability from './ApprovalProbability';
 
+const RenderHistorial = ({ history, formatFecha }) => {
+  if (history.length === 0) {
+    return <p>No hay simulaciones anteriores.</p>;
+  }
+  return (
+    <ul className="historyList">
+      {history.map((item, i) => (
+        <li key={i} className="historyItem">
+          <b>{formatFecha(item.fecha)}</b> — Monto: ${item.monto.toLocaleString()} / {item.plazo} cuotas
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 const validarFormulario = (amount, installments, rentalLiquida, MIN_AMOUNT, MAX_AMOUNT) => {
   if (!amount || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
     return `El monto debe estar entre ${MIN_AMOUNT} y ${MAX_AMOUNT}`;
@@ -258,21 +273,11 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
           >
             {showHistory ? "Ver actual" : "Ver historial"}
           </button>
-
+          
           {showHistory ? (
-            <>
+      <>
               <h3>Historial</h3>
-              {history.length === 0 ? (
-                <p>No hay simulaciones anteriores.</p>
-              ) : (
-                <ul className={styles.historyList}>
-                  {history.map((item, i) => (
-                    <li key={i} className={styles.historyItem}>
-                      <b>{formatFecha(item.fecha)}</b> — Monto: ${item.monto.toLocaleString()} / {item.plazo} cuotas / Cuota: ${parseInt(item.cuota).toLocaleString()}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <RenderHistorial history={history} formatFecha={formatFecha} />
             </>
           ) : (
             <>
@@ -285,21 +290,25 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
               <p><b>Costo total:</b> ${result ? parseInt(result.costoTotal).toLocaleString() : "-"}</p>
               
               {result && (
-              <>
-                <ApprovalProbability riskLevel={riskData.level} suggestion={riskData.suggestion} />
-                
-                <div className={styles.buttonContainer}>
-                  <button onClick={handleSave} className={styles.button_right}>
-                    Guardar Simulación
-                  </button>
-                  <button onClick={() => onRequestLoan(result)} className={styles.button_right} style={{ marginLeft: 8 }}>
-                    Solicitar Préstamo
-                  </button>
-                </div>
-              </>
-            )}
+                <>
+                  <ApprovalProbability riskLevel={riskData.level} suggestion={riskData.suggestion} />
+                  
+                  <div className={styles.buttonContainer}>
+                    <button onClick={handleSave} className={styles.button_right}>
+                      Guardar Simulación
+                    </button>
+                    <button
+                      onClick={() => onRequestLoan(result)}
+                      className={styles.button_right}
+                      style={{ marginLeft: 8 }}
+                    >
+                      Solicitar Préstamo
+                    </button>
+                  </div>
+                </>
+              )}
             </>
-    )}
+          )}
         </div>
       </div>
     </div>
