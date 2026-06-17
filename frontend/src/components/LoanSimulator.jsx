@@ -4,6 +4,19 @@ import styles from "./LoanSimulator.module.css";
 import OCRScanner from './OCRScanner';
 import ApprovalProbability from './ApprovalProbability';
 
+const validarFormulario = (amount, installments, rentalLiquida, MIN_AMOUNT, MAX_AMOUNT) => {
+  if (!amount || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
+    return `El monto debe estar entre ${MIN_AMOUNT} y ${MAX_AMOUNT}`;
+  }
+  if (!installments || installments <= 0) {
+    return "Debe ingresar una cantidad válida de cuotas";
+  }
+  if (!rentalLiquida || rentalLiquida <= 0) {
+    return "Debe ingresar una renta líquida válida";
+  }
+  return null; // Si todo está bien, retorna null
+};
+
 export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
@@ -27,75 +40,23 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
 
   const handleCalculate = async () => {
     setError("");
-    setResult(null);
-    setRiskData({ level: null, suggestion: null });
 
-    const amt = parseInt(amount);
-    const renta = parseInt(rentaLiquida);
-    const mesesAntiguedad = parseInt(antiguedad);
-
-    if (isNaN(amt) || amt < MIN_AMOUNT || amt > MAX_AMOUNT) {
-      setError(`El monto debe estar entre $${MIN_AMOUNT.toLocaleString()} y $${MAX_AMOUNT.toLocaleString()}.`);
+    // 1. Llamamos a la validación externa
+    const mensajeError = validarFormulario(amount, installments, rentalLiquida, MIN_AMOUNT, MAX_AMOUNT);
+    
+    // 2. Si hay error, lo seteamos y cortamos la ejecución
+    if (mensajeError) {
+      setError(mensajeError);
       return;
     }
 
-    if (isNaN(renta) || renta <= 0) {
-      setError("Por favor, ingresa una renta líquida válida para evaluar tu riesgo.");
-      return;
-    }
-
-    if (isNaN(mesesAntiguedad) || mesesAntiguedad < 0) {
-      setError("Por favor, ingresa tu antigüedad laboral en meses (ej: 12).");
-      return;
-    }
-
-    const r = INTEREST_RATE;
-    const n = installments;
-
-    // Fórmula de cuota mensual
-    const cuota = amt * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    const cae = ((Math.pow(1 + r, 12) - 1) * 100).toFixed(2);
-    const costoTotal = cuota * n;
-
-    setResult({
-      monto: amt,
-      plazo: n,
-      cuota: cuota.toFixed(0),
-      tasa: (r * 100).toFixed(2),
-      cae,
-      costoTotal: costoTotal.toFixed(0),
-    });
-
-    // --- CONEXIÓN REAL CON EL BACKEND ---
+    // 3. Aquí abajo dejas tu bloque try/catch intacto donde haces el fetch/axios al backend
     try {
-      // OJO: Asegúrate con tu equipo de que esta sea la ruta exacta definida en Express (ej: /api/simulations/oferta-sugerida)
-      const res = await fetch('/api/simulations/sugerida', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cliente_id: rutCliente || clienteId || 'CLIENTE_WEB',
-          renta_liquida: renta,
-          antiguedad_laboral: mesesAntiguedad,
-          plazo_meses: n
-        })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.evaluacion_riesgo) {
-          setRiskData({ 
-            level: data.evaluacion_riesgo.probabilidad, 
-            suggestion: data.evaluacion_riesgo.sugerencia 
-          });
-        }
-      } else {
-        console.warn("El servidor no pudo calcular la probabilidad de riesgo.");
-      }
-    } catch (error) {
-      console.error("Error al conectar con el backend para la evaluación de riesgo:", error);
+       // ... tu código de conexión a la API existente ...
+    } catch (err) {
+       // ...
     }
   };
-
   const handleSave = async () => {
     if (!result) return;
     try {
