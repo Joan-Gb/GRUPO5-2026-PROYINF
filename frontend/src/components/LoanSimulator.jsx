@@ -17,6 +17,58 @@ const validarFormulario = (amount, installments, rentalLiquida, MIN_AMOUNT, MAX_
   return null; // Si todo está bien, retorna null
 };
 
+const COOKIE_NAME = 'simulations_history_v1';
+
+  function readCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) {
+      try {
+        return JSON.parse(decodeURIComponent(match[2]));
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  function writeCookie(name, value, days = 30) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/`;
+  }
+
+  function saveLocalSimulation(entry) {
+    const existing = readCookie(COOKIE_NAME) || [];
+    const updated = [entry, ...existing].slice(0, 30);
+    writeCookie(COOKIE_NAME, updated, 365);
+  }
+
+  useEffect(() => {
+    try {
+      const saved = readCookie(COOKIE_NAME) || [];
+      setHistory(saved);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  function formatFecha(iso) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      const pad = (n) => String(n).padStart(2, '0');
+      const hh = pad(d.getHours());
+      const mm = pad(d.getMinutes());
+      const ss = pad(d.getSeconds());
+      const dd = pad(d.getDate());
+      const mo = pad(d.getMonth() + 1);
+      const yyyy = d.getFullYear();
+      return `${dd}/${mo}/${yyyy} - ${hh}:${mm}:${ss}`;
+    } catch (e) {
+      return iso;
+    }
+  }
+
 export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }) {
   const [amount, setAmount] = useState("");
   const [installments, setInstallments] = useState(24);
@@ -110,58 +162,6 @@ export default function LoanSimulator({ onRequestLoan, onBackToMenu, clienteId }
       alert('No se pudo guardar la simulación');
     }
   };
-
-  const COOKIE_NAME = 'simulations_history_v1';
-
-  function readCookie(name) {
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    if (match) {
-      try {
-        return JSON.parse(decodeURIComponent(match[2]));
-      } catch (e) {
-        return [];
-      }
-    }
-    return [];
-  }
-
-  function writeCookie(name, value, days = 30) {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/`;
-  }
-
-  function saveLocalSimulation(entry) {
-    const existing = readCookie(COOKIE_NAME) || [];
-    const updated = [entry, ...existing].slice(0, 30);
-    writeCookie(COOKIE_NAME, updated, 365);
-  }
-
-  useEffect(() => {
-    try {
-      const saved = readCookie(COOKIE_NAME) || [];
-      setHistory(saved);
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
-  function formatFecha(iso) {
-    if (!iso) return '';
-    try {
-      const d = new Date(iso);
-      const pad = (n) => String(n).padStart(2, '0');
-      const hh = pad(d.getHours());
-      const mm = pad(d.getMinutes());
-      const ss = pad(d.getSeconds());
-      const dd = pad(d.getDate());
-      const mo = pad(d.getMonth() + 1);
-      const yyyy = d.getFullYear();
-      return `${dd}/${mo}/${yyyy} - ${hh}:${mm}:${ss}`;
-    } catch (e) {
-      return iso;
-    }
-  }
 
   return (
     <div className={styles.wrapper}>
