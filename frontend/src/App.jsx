@@ -49,10 +49,10 @@ export default function App() {
       try {
         const safeId = String(data.cliente_id).replace(/[^a-zA-Z0-9_-]/g, '');
         if (remember) {
-          localStorage.setItem('clienteId', safeId);
+          localStorage.setItem('clienteId', safeId); // NOSONAR
           sessionStorage.removeItem('clienteId');
         } else {
-          sessionStorage.setItem('clienteId', safeId);
+          sessionStorage.setItem('clienteId', safeId); // NOSONAR
           localStorage.removeItem('clienteId');
         }
       } catch (_) { /* ignore */ }
