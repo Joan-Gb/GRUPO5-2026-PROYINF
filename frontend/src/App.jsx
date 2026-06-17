@@ -48,10 +48,10 @@ export default function App() {
       // Persist depending on remember flag
       try {
         if (remember) {
-          localStorage.setItem('clienteId', data.cliente_id);
+          localStorage.setItem('clienteId', String(data.cliente_id));
           sessionStorage.removeItem('clienteId');
         } else {
-          sessionStorage.setItem('clienteId', data.cliente_id);
+          sessionStorage.setItem('clienteId', String(data.cliente_id));
           localStorage.removeItem('clienteId');
         }
       } catch (_) { /* ignore */ }
